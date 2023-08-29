@@ -7,6 +7,6 @@ from .models import Category
 
 class CategoryAdmin(admin.ModelAdmin):
     fields = ['name', 'image']
-
+    list_display = ['id', 'name', 'updatedAt']
 
 admin.site.register(Category, CategoryAdmin)
