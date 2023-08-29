@@ -1,15 +1,14 @@
 from django.contrib import admin
 
-from .models import Category
+from .models import Brand
 
 
 # Register your models here.
 
-class CategoryAdmin(admin.ModelAdmin):
+class BrandAdmin(admin.ModelAdmin):
     fields = ['name', 'image','createdAt','updatedAt']
     list_display = ['id', 'name', 'updatedAt']
     list_display_links = ['name', 'id']
     readonly_fields = ['createdAt','updatedAt']
 
-
-admin.site.register(Category, CategoryAdmin)
+admin.site.register(Brand, BrandAdmin)
