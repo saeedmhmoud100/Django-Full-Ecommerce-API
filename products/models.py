@@ -11,7 +11,6 @@ from Utilities.models import generate_image_filename
 from brands.models import Brand
 from categories.models import Category
 
-
 # Create your models here.
 
 class Product(models.Model):
@@ -23,21 +22,21 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0.0)])
     sold = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0.0)])
     price = models.FloatField(default=0, validators=[MinValueValidator(0.0)])
-    availableColors = models.CharField(max_length=200, blank=True, null=True)
+    # availableColors = models.CharField(max_length=200, blank=True, null=True)
     imageCover = models.ImageField(upload_to=generate_image_filename, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
-    def set_availableColors(self, value):
-        self.availableColors = json.dumps(value)
+    def all_colors(self):
+        l = []
+        for i in self.colors.all():
+            l.append(i.name)
+        return l
 
-    def get_availableColors(self):
-        return json.loads(self.availableColors)
-
-    def ratingsQuantity(self):
-        print(self.ratings.first())
+    def ratings_quantity(self):
+        # print(self.ratings.first())
         return self.ratings.count()
 
     def add_images(self, images):
@@ -58,6 +57,12 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+
+class Color(models.Model):
+    name = models.CharField(max_length=20)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,related_name='colors')
+    createdAt = models.DateTimeField(auto_now_add=True, editable=False)
+    updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
 class Image(models.Model):
     img = models.ImageField(upload_to=generate_image_filename, blank=True)
@@ -87,3 +92,8 @@ class Rating(models.Model):
 
         # self.imageCover = self.images.first().img
         super().save(*args, **kwargs)
+# from django.contrib.auth.models import User
+# from models.py import Product
+# u = User.objects.all().first()
+#
+# p = Product.objects.create(title='d',owner=u,quantity=1)

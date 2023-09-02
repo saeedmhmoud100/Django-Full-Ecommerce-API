@@ -1,13 +1,15 @@
 from django.contrib import admin
 
-from .models import Product, Rating, Image
+from .models import Product, Rating, Image, Color
+
+
 # Register your models here.
 
 
 
 class ProductAdmin(admin.ModelAdmin):
-    exclude = ('_id','imageCover')
-    readonly_fields = ['id','slug','ratingsQuantity','createdAt','updatedAt']
+    exclude = ('_id',)
+    readonly_fields = ['id','slug','ratings_quantity','createdAt','updatedAt']
 
     class ImageInline(admin.TabularInline):
         model = Image
@@ -18,7 +20,13 @@ class ProductAdmin(admin.ModelAdmin):
         readonly_fields = ('_id',)
         # fields = ('_id','user','rating')
 
-    inlines = [ImageInline, ReviewsInline]
+    class ColorsInline(admin.TabularInline):
+        model = Color
+
+        # exclude = ('review',)
+        # readonly_fields = ('_id',)
+
+    inlines = [ColorsInline,ImageInline, ReviewsInline]
 
     # def add_images(self, request, queryset):
     #     print(request)
