@@ -4,23 +4,21 @@ from .models import Product, Rating, Image
 # Register your models here.
 
 
-class ImageAdmin(admin.ModelAdmin):
-    list_display = ('product', 'createdAt', 'updatedAt')
-    list_filter = ('createdAt', 'updatedAt')
-    search_fields = ('product__title', 'createdAt', 'updatedAt')
-
 
 class ProductAdmin(admin.ModelAdmin):
-    # fields = ['name', 'image','createdAt','updatedAt']
-    # list_display = ['id', 'name', 'updatedAt']
-    # list_display_links = ['title', 'id']
     exclude = ('_id','imageCover')
     readonly_fields = ['id','slug','ratingsQuantity','createdAt','updatedAt']
 
     class ImageInline(admin.TabularInline):
         model = Image
 
-    inlines = [ImageInline]
+    class ReviewsInline(admin.TabularInline):
+        model = Rating
+        exclude = ('review',)
+        readonly_fields = ('_id',)
+        # fields = ('_id','user','rating')
+
+    inlines = [ImageInline, ReviewsInline]
 
     # def add_images(self, request, queryset):
     #     print(request)
@@ -28,6 +26,23 @@ class ProductAdmin(admin.ModelAdmin):
 
     # add_images.short_description = "Add images to selected products"
 
+
+
+class ImageAdmin(admin.ModelAdmin):
+    list_display = ('product', 'createdAt', 'updatedAt')
+    list_filter = ('createdAt', 'updatedAt')
+    search_fields = ('product__title', 'createdAt', 'updatedAt')
+
+
+class RatingAdmin(admin.ModelAdmin):
+    readonly_fields = ('_id',)
+    list_display = ('user', 'product', 'rating', 'createdAt', 'updatedAt')
+    search_fields = ('product__title', 'user__username', 'rating', 'review')
+
+
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Image)
-admin.site.register(Rating)
+admin.site.register(Rating,RatingAdmin)
+
+

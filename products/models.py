@@ -1,7 +1,7 @@
 import json
 
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import JSONField
 from django.utils.text import slugify
@@ -18,11 +18,11 @@ class Product(models.Model):
     _id = models.IntegerField(blank=True, null=True)
     title = models.CharField(max_length=30)
     slug = models.SlugField(max_length=40, blank=True)
-    owner = models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     description = models.TextField(max_length=600, blank=True)
-    quantity = models.PositiveIntegerField(default=0,validators=[MinValueValidator(0.0)])
-    sold = models.PositiveIntegerField(default=0,validators=[MinValueValidator(0.0)])
-    price = models.FloatField(default=0,validators=[MinValueValidator(0.0)])
+    quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0.0)])
+    sold = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0.0)])
+    price = models.FloatField(default=0, validators=[MinValueValidator(0.0)])
     availableColors = models.CharField(max_length=200, blank=True, null=True)
     imageCover = models.ImageField(upload_to=generate_image_filename, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
@@ -35,15 +35,17 @@ class Product(models.Model):
 
     def get_availableColors(self):
         return json.loads(self.availableColors)
+
     def ratingsQuantity(self):
         print(self.ratings.first())
         return self.ratings.count()
 
-    def add_images(self,images):
+    def add_images(self, images):
         for i in images:
             self.images.add(i)
             self.save()
         return self.images
+
     def save(self, *args, **kwargs):
         if not self._id:
             self._id = self.id
@@ -56,20 +58,32 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+
 class Image(models.Model):
-    img = models.ImageField(upload_to=generate_image_filename,blank=True)
-    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='images')
+    img = models.ImageField(upload_to=generate_image_filename, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
+
     def __str__(self):
         return str(self.product)
 
 
 class Rating(models.Model):
     _id = models.IntegerField(blank=True, null=True)
-    user = models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
-    product = models.ForeignKey(Product,related_name='ratings',on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='ratings', on_delete=models.CASCADE)
     review = models.TextField(max_length=500)
-    rating = models.FloatField(validators=[MinValueValidator(0.0)])
+    rating = models.FloatField(validators=[MinValueValidator(0.0),MaxValueValidator(5.0)])
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
+
+    def __str__(self):
+        return self.product.title + ' (' + str(self.rating) + ')'
+
+    def save(self, *args, **kwargs):
+        if not self._id:
+            self._id = self.id
+
+        # self.imageCover = self.images.first().img
+        super().save(*args, **kwargs)
