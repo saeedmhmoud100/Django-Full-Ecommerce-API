@@ -38,6 +38,12 @@ class Product(models.Model):
     def ratingsQuantity(self):
         print(self.ratings.first())
         return self.ratings.count()
+
+    def add_images(self,images):
+        for i in images:
+            self.images.add(i)
+            self.save()
+        return self.images
     def save(self, *args, **kwargs):
         if not self._id:
             self._id = self.id
