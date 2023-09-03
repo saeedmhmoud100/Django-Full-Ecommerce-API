@@ -11,6 +11,7 @@ from Utilities.models import generate_image_filename
 from brands.models import Brand
 from categories.models import Category
 
+
 # Create your models here.
 
 class Product(models.Model):
@@ -26,7 +27,7 @@ class Product(models.Model):
     imageCover = models.ImageField(upload_to=generate_image_filename, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
-    users_wishlist = models.ManyToManyField(get_user_model(), related_name='wishList')
+    users_wishlist = models.ManyToManyField(get_user_model(), related_name='wishList', blank=True, null=True)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
@@ -61,9 +62,13 @@ class Product(models.Model):
 
 class Color(models.Model):
     name = models.CharField(max_length=20)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE,related_name='colors')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='colors')
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
+
+    def __str__(self):
+        return str('(' + self.product.title + ') ' + self.name)
+
 
 class Image(models.Model):
     img = models.ImageField(upload_to=generate_image_filename, blank=True)
@@ -80,7 +85,7 @@ class Rating(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='ratings', on_delete=models.CASCADE)
     review = models.TextField(max_length=500)
-    rating = models.FloatField(validators=[MinValueValidator(0.0),MaxValueValidator(5.0)])
+    rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
@@ -94,7 +99,8 @@ class Rating(models.Model):
         # self.imageCover = self.images.first().img
         super().save(*args, **kwargs)
 # from django.contrib.auth.models import User
-# from models.py import Product
+# from products.models import Product
 # u = User.objects.all().first()
+# p = Product.objects.last()
 #
 # p = Product.objects.create(title='d',owner=u,quantity=1)
