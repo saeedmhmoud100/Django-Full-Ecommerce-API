@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from carts.models import CartItem, Cart
+from carts.models import CartItem, Cart, Coupon
 
 
 # Register your models here.
@@ -9,6 +9,7 @@ from carts.models import CartItem, Cart
 @admin.register(Cart)
 class AdminCart(admin.ModelAdmin):
     readonly_fields = ('total_price', )
+    exclude = ('_id',)
     class AdminCartItems(admin.TabularInline):
         model = CartItem
         fields = ('product','get_price','quantity')
@@ -16,3 +17,8 @@ class AdminCart(admin.ModelAdmin):
 
     inlines = [AdminCartItems]
 
+@admin.register(Coupon)
+class ModelNameAdmin(admin.ModelAdmin):
+    exclude = ('_id',)
+    list_display = ('id','name','expire','discount')
+    list_display_links = ('id','name')

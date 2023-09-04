@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.timezone import now
 
@@ -9,13 +9,26 @@ from products.models import Product
 # Create your models here.
 
 
-class Cart(models.Model):
-    _id = models.IntegerField(null=True,blank=True)
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='cart')
-    total_price = models.IntegerField(default=0, blank=True, null=True)
+class Coupon(models.Model):
+    _id = models.IntegerField(null=True, blank=True)
+    name = models.CharField(max_length=50, unique=True)
+    expire = models.DateTimeField(default=now)
+    discount = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)])
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
-    # coupon = models.IntegerField(default=0,blank=True,null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Cart(models.Model):
+    _id = models.IntegerField(null=True, blank=True)
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='cart')
+    total_price = models.IntegerField(default=0, blank=True, null=True)
+    coupon = models.FloatField(default=0, blank=True, null=True)
+    createdAt = models.DateTimeField(auto_now_add=True, editable=False)
+    updatedAt = models.DateTimeField(auto_now=now, editable=False)
+
     def get_all_cart(self):
         l = []
         for i in self.cartItems.all():
