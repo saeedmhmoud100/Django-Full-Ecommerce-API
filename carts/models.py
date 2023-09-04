@@ -8,10 +8,10 @@ from products.models import Product
 # Create your models here.
 
 
-
 class Cart(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='cart')
-    total_price = models.IntegerField(default=0,blank=True,null=True)
+    total_price = models.IntegerField(default=0, blank=True, null=True)
+
     # coupon = models.IntegerField(default=0,blank=True,null=True)
     def get_all_cart(self):
         l = []
@@ -25,13 +25,13 @@ class Cart(models.Model):
     def __str__(self):
         return f"({self.user.username}) Cart"
 
-    def save(self,*args,**kwargs):
-        t=0
-        if self.id and self.cartItems.count()>0:
+    def save(self, *args, **kwargs):
+        t = 0
+        if self.id and self.cartItems.count() > 0:
             for i in self.cartItems.all():
-               t += i.get_price()
+                t += i.get_price()
             self.total_price = t
-        super().save(*args,**kwargs)
+        super().save(*args, **kwargs)
 
 
 class CartItem(models.Model):

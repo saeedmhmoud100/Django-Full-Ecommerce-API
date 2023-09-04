@@ -1,15 +1,17 @@
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from carts.models import Cart
+from users.models import MyUser
 
 
-@receiver(post_save, sender=get_user_model())
+@receiver(post_save, sender=MyUser)
 def create_user_cart(sender, instance, created, **kwargs):
+    print("Signal handler called!")
     if created:
-        # Create a Cart instance after the user is saved
         Cart.objects.create(user=instance)
 
 
-post_save.connect(create_user_cart, sender=get_user_model())
+# Connect the signal
+post_save.connect(create_user_cart, sender=MyUser)

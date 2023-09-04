@@ -27,7 +27,7 @@ class Product(models.Model):
     imageCover = models.ImageField(upload_to=generate_image_filename, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
-    users_wishlist = models.ManyToManyField(get_user_model(), related_name='wishList', blank=True, null=True)
+    users_wishlist = models.ManyToManyField(get_user_model(), related_name='wishList', blank=True)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
