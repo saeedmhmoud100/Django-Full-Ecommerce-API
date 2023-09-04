@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Product, Rating, Image, Color
+from .models import Product, Reviews, Image, Color
 
 
 # Register your models here.
@@ -15,7 +15,7 @@ class ProductAdmin(admin.ModelAdmin):
         model = Image
 
     class ReviewsInline(admin.TabularInline):
-        model = Rating
+        model = Reviews
         exclude = ('review',)
         readonly_fields = ('_id',)
         # fields = ('_id','user','rating')
@@ -51,6 +51,6 @@ class RatingAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Image)
-admin.site.register(Rating,RatingAdmin)
+admin.site.register(Reviews, RatingAdmin)
 
 

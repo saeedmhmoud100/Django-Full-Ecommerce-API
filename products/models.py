@@ -80,7 +80,7 @@ class Image(models.Model):
         return str(self.product)
 
 
-class Rating(models.Model):
+class Reviews(models.Model):
     _id = models.IntegerField(blank=True, null=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='ratings', on_delete=models.CASCADE)
