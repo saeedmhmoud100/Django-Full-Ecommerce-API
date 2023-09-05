@@ -20,7 +20,7 @@ class Coupon(models.Model):
 
 class Cart(models.Model):
     _id = models.IntegerField(null=True, blank=True)
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='cart')
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='carts')
     total_price = models.FloatField(default=0, blank=True, null=True)
     coupon = models.IntegerField(default=0, blank=True, null=True)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
@@ -47,7 +47,7 @@ class Cart(models.Model):
         return l
 
     def __str__(self):
-        return f"({self.user.username}) Cart"
+        return f"({self.user.username}) Cart " + str(self.id)
 
     def calc_total_price(self):
         t = 0.0

@@ -30,12 +30,24 @@ class Order(models.Model):
     total_order_price = models.IntegerField(default=0,blank=True,null=True)
 
     def save(self, *args, **kwargs):
+        # Check if the order is being created for the first time (not updated)
+        is_new_order = not self._state.adding
+
         self.total_order_price = self.cart.total_price
         super().save(*args, **kwargs)
         if not self._id:
             print(self.id)
             self._id = self.id
             self.save()
+
+        if is_new_order:
+            user = self.user
+            if user:
+                # Create a new cart and assign it to the user
+                new_cart = Cart.objects.create(user=user)
+                user.cart = new_cart
+                user.save()
+
 
     def __str__(self):
         return self.user.username + " (Order " + str(self.id) + ")"
