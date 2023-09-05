@@ -56,15 +56,16 @@ class Cart(models.Model):
 
         if self.coupon > 0.0:
             t *= (1-self.coupon / 100)
+            print(t)
         self.total_price = t
         return t
 
     def save(self, *args, **kwargs):
         if not self._id:
             self._id = self.id
-        super().save(*args, **kwargs)
         if self.cartItems.exists():
             self.calc_total_price()
+        super().save(*args, **kwargs)
 
 
 class CartItem(models.Model):

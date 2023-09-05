@@ -32,5 +32,5 @@ def create_new_cart_when_order(sender, instance, created, **kwargs):
         instance.user.cart = new_cart
         instance.user.save()
 
-        
+
 post_save.connect(calc_total_cart_price, sender=Order)
