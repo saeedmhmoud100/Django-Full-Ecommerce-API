@@ -55,7 +55,7 @@ class Cart(models.Model):
     def calc_total_price(self):
         t = 0.0
         for i in self.cartItems.all():
-            t += i.get_price()
+            t += i.get_all_price()
 
         if self.coupon > 0.0:
             t *= (1-self.coupon / 100)
@@ -77,7 +77,7 @@ class CartItem(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
-    def get_price(self):
+    def get_all_price(self):
         return self.product.price * self.quantity
 
     def __str__(self):
