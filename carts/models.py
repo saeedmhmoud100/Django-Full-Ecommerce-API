@@ -6,9 +6,6 @@ from django.utils.timezone import now
 from products.models import Product
 
 
-# Create your models here.
-
-
 class Coupon(models.Model):
     _id = models.IntegerField(null=True, blank=True)
     name = models.CharField(max_length=50, unique=True)
@@ -40,7 +37,7 @@ class Cart(models.Model):
             self.coupon = 0
             return 'Dose Not Exist'
 
-    def get_all_cart(self):
+    def get_all_cart_items(self):
         l = []
         for i in self.cartItems.all():
             l.append({
@@ -65,8 +62,9 @@ class Cart(models.Model):
     def save(self, *args, **kwargs):
         if not self._id:
             self._id = self.id
-        self.calc_total_price()
         super().save(*args, **kwargs)
+        if self.cartItems.exists():
+            self.calc_total_price()
 
 
 class CartItem(models.Model):
