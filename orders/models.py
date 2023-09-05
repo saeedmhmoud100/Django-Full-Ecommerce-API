@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Q
 from django.utils.timezone import now
 
 from carts.models import Cart
@@ -14,9 +16,15 @@ class Order(models.Model):
         print(self)
         return UserAddress.objects.filter(user=self.user)
 
-    address = models.ForeignKey(UserAddress, on_delete=models.CASCADE)
+    address = models.ForeignKey(
+        UserAddress,
+        on_delete=models.CASCADE,
+        limit_choices_to=Q(user=models.F('user')),
+    )
 
-    cart = models.OneToOneField(Cart, related_name='order', on_delete=models.CASCADE)
+    cart = models.OneToOneField(Cart, related_name='order', on_delete=models.CASCADE,blank=True)
+
+
     is_delivered = models.BooleanField(default=False)
     is_paid = models.BooleanField(default=False)
 
@@ -29,24 +37,18 @@ class Order(models.Model):
 
     total_order_price = models.IntegerField(default=0,blank=True,null=True)
 
+
     def save(self, *args, **kwargs):
         # Check if the order is being created for the first time (not updated)
-        is_new_order = not self._state.adding
+        self.cart = self.user.carts.last()
+        if self.cart.cartItems.exists():
+            self.total_order_price = self.cart.total_price
+            super().save(*args, **kwargs)
 
-        self.total_order_price = self.cart.total_price
-        super().save(*args, **kwargs)
-        if not self._id:
-            print(self.id)
-            self._id = self.id
-            self.save()
+            if not self._id:
+                self._id = self.id
+                self.save()
 
-        if is_new_order:
-            user = self.user
-            if user:
-                # Create a new cart and assign it to the user
-                new_cart = Cart.objects.create(user=user)
-                user.cart = new_cart
-                user.save()
 
 
     def __str__(self):
