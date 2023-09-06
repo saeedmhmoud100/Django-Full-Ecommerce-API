@@ -9,10 +9,10 @@ from Utilities.models import generate_image_filename
 
 
 class Category(models.Model):
-    _id = models.IntegerField(blank=True,null=True)
-    name = models.CharField(max_length=30)
-    slug = models.SlugField(max_length=40,blank=True)
-    image = models.ImageField(upload_to=generate_image_filename)
+    _id = models.IntegerField(blank=True,null=True,editable=False)
+    name = models.CharField(max_length=30,unique=True)
+    slug = models.SlugField(max_length=40,blank=True,editable=False)
+    image = models.ImageField(upload_to=generate_image_filename,blank=True)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=True, editable=False)
 

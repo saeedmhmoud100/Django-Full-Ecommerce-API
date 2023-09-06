@@ -22,6 +22,7 @@ class Pagination(PageNumberPagination):
                 # 'previous': self.get_previous_link(),
                 'previous': previous_page_number,
             },
-            'DataCountInPage':len(data),
+            'DataCountInPage':self.page_size,
+            'DataCountInTisPage':len(data),
             'Data': data,
         })
