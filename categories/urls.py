@@ -15,10 +15,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-
-from categories.views import CategoryListCreateViewAPI
+from categories.views import CategoryListCreateViewAPI,CategoryRetrieveUpdateDestroyViewAPI
 
 
 urlpatterns = [
     path('categories/',CategoryListCreateViewAPI.as_view(),name='category-list'),
+    path('categories/<int:pk>',CategoryRetrieveUpdateDestroyViewAPI.as_view(),name='category-details')
 ]
