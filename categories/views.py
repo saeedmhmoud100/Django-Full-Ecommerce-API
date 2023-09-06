@@ -16,3 +16,9 @@ class CategoryListCreateViewAPI(generics.ListCreateAPIView):
     pagination_class = Pagination
     # authentication_classes = [TokenAuthentication]
 
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        if not request.data.get('image'):
+            return Response({'image':'this field is required'})
+        return super().post(request,*args,**kwargs)
+
