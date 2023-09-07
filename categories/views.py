@@ -12,13 +12,12 @@ from categories.serializers import CategorySerializer
 class CategoryListCreateViewAPI(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly,IsAdminOrReadOnly]
     pagination_class = Pagination
 
     # authentication_classes = [TokenAuthentication]
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
         if not request.data.get('image'):
             return Response({'image': 'this field is required'})
         return super().post(request, *args, **kwargs)
@@ -42,4 +41,4 @@ class CategoryRetrieveUpdateDestroyViewAPI(generics.RetrieveUpdateDestroyAPIView
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        return Response({'status':'success'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'status':'success'}, status=status.HTTP_200_OK)

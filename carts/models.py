@@ -61,11 +61,12 @@ class Cart(models.Model):
         return t
 
     def save(self, *args, **kwargs):
-        if not self._id:
-            self._id = self.id
-        if self.cartItems.exists():
-            self.calc_total_price()
+        if self._id:
+            if self.cartItems.exists():
+                self.calc_total_price()
         super().save(*args, **kwargs)
+        if self.id!= self._id:
+            self._id = self.id
 
 
 class CartItem(models.Model):

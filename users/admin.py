@@ -13,7 +13,7 @@ from users.models import UserAddress
 
 @admin.register(get_user_model())
 class UserAdmin(UserAdmin):
-    list_display = ('username', 'email')
+    list_display = ('id','username', 'email')
     add_fieldsets = (
         (None, {
             'classes': ('wide',),

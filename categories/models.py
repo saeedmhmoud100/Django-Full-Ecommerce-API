@@ -17,11 +17,11 @@ class Category(models.Model):
     updatedAt = models.DateTimeField(auto_now=True, editable=False)
 
     def save(self, *args, **kwargs):
-        if not self._id:
-            self._id = self.id
-        if not self.slug:
+        if self.slug != slugify(self.name):
             self.slug = slugify(self.name)
         super().save(*args,**kwargs)
+        if self._id != self.id:
+            self._id = self.id
 
     def __str__(self):
         return self.name

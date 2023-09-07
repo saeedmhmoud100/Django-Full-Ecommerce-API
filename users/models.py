@@ -44,9 +44,9 @@ class UserAddress(models.Model):
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='addresses')
 
     def save(self, *args, **kwargs):
-        if not self._id:
-            self._id = self.id
         super().save(*args, **kwargs)
+        if self.id != self._id:
+            self._id = self.id
 
     def __str__(self):
         return str('(' + self.user.username + ') ' + self.alias)
