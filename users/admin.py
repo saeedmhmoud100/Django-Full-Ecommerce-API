@@ -14,6 +14,7 @@ from users.models import UserAddress
 @admin.register(get_user_model())
 class UserAdmin(UserAdmin):
     list_display = ('id','username', 'email')
+    list_display_links = ['username', 'id']
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
