@@ -14,8 +14,9 @@ from brands.serializers import BrandSerializer
 class BrandViewSet(viewsets.ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly,IsAdminOrReadOnly]
+    permission_classes = []
     pagination_class = Pagination
+    # authentication_classes = (JSONWebTokenAuthentication)
 
 router = routers.DefaultRouter()
-router.register(r'brand', BrandViewSet)
+router.register(r'brands', BrandViewSet)

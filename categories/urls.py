@@ -19,6 +19,6 @@ from categories.views import CategoryListCreateViewAPI,CategoryRetrieveUpdateDes
 
 
 urlpatterns = [
-    path('categories/',CategoryListCreateViewAPI.as_view(),name='category-list'),
-    path('categories/<int:pk>',CategoryRetrieveUpdateDestroyViewAPI.as_view(),name='category-details')
+    path('',CategoryListCreateViewAPI.as_view(),name='category-list'),
+    path('<int:pk>',CategoryRetrieveUpdateDestroyViewAPI.as_view(),name='category-details')
 ]
