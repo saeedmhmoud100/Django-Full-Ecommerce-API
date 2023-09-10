@@ -37,6 +37,10 @@ class Product(models.Model):
             l.append(i.name)
         return l
 
+    def add_colors(self,colors):
+        for color_name in colors:
+            color_instance, created = Color.objects.get_or_create(name=color_name, product=self)
+
     def ratings_quantity(self):
         # print(self.ratings.first())
         return self.ratings.count()
@@ -59,8 +63,8 @@ class Product(models.Model):
 
 
 class Color(models.Model):
-    name = models.CharField(max_length=20)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='colors')
+    name = models.CharField(max_length=20,blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='colors',blank=True,null=True)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
