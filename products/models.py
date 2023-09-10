@@ -57,6 +57,7 @@ class Product(models.Model):
         super().save(*args, **kwargs)
         if self.id != self._id:
             self._id = self.id
+            self.save()
 
     def __str__(self):
         return self.title

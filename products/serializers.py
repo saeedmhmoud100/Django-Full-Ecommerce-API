@@ -12,11 +12,14 @@ class ImageSerializer(serializers.ModelSerializer):
 class ColorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Color
-        fields = '__all__'
+        fields = ['name']
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    colors = ColorSerializer(many=True,required=False)
+    colors = serializers.SerializerMethodField()
     class Meta:
         model = Product
         fields = '__all__'
+
+    def get_colors(self,obj):
+        return [color.name for color in obj.colors.all()]
