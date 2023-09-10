@@ -15,10 +15,10 @@ from categories.models import Category
 # Create your models here.
 
 class Product(models.Model):
-    _id = models.IntegerField(blank=True, null=True)
+    _id = models.IntegerField(blank=True, null=True,editable=False)
     title = models.CharField(max_length=30)
-    slug = models.SlugField(max_length=40, blank=True)
-    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=40, blank=True,editable=False)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, editable=False)
     description = models.TextField(max_length=600, blank=True)
     quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0.0)])
     sold = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0.0)])
@@ -27,7 +27,7 @@ class Product(models.Model):
     imageCover = models.ImageField(upload_to=generate_image_filename, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
-    users_wishlist = models.ManyToManyField(get_user_model(), related_name='wishList', blank=True)
+    users_wishlist = models.ManyToManyField(get_user_model(), related_name='wishList', blank=True,editable=False)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
@@ -48,13 +48,11 @@ class Product(models.Model):
         return self.images
 
     def save(self, *args, **kwargs):
-        if not self._id:
-            self._id = self.id
         if not self.slug:
             self.slug = slugify(self.title)
-
-        # self.imageCover = self.images.first().img
         super().save(*args, **kwargs)
+        if self.id != self._id:
+            self._id = self.id
 
     def __str__(self):
         return self.title
