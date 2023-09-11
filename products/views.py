@@ -52,9 +52,12 @@ class ProductDetailsView(generics.RetrieveUpdateDestroyAPIView):
         return Response({'status': 'success'}, status=status.HTTP_200_OK)
 
     def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
         res = super().update(request, *args, **kwargs)
-        self.get_object().delete_images()
-        self.get_object().delete_colors()
+        if not partial or (partial and len(request.data.getlist('images')) > 0):
+            self.get_object().delete_images()
+        if not partial or (partial and len(request.data.getlist('colors'))):
+            self.get_object().delete_colors()
         setImagesAndColors(res=res, request=request)
 
         return Response({'status': 'success', 'data': ProductSerializer(self.get_object()).data},
