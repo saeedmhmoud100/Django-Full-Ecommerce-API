@@ -17,13 +17,17 @@ class ColorSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     colors = serializers.SerializerMethodField()
-    images = serializers.ImageField()
+    images = serializers.SerializerMethodField()
+
     class Meta:
         model = Product
-        fields = ['id','title','slug','description','quantity','sold','price','imageCover',
-                  'images','colors',
-                  'user','category','brand', 'createdAt','updatedAt','_id']
+        fields = ['id', 'title', 'slug', 'description', 'quantity', 'sold', 'price', 'imageCover',
+                  'images', 'colors',
+                  'user', 'category', 'brand', 'createdAt', 'updatedAt', '_id']
         # fields = '__all__'
 
-    def get_colors(self,obj):
+    def get_colors(self, obj):
         return [color.name for color in obj.colors.all()]
+
+    def get_images(self, obj):
+        return [image.img.url for image in obj.images.all()]

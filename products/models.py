@@ -24,7 +24,7 @@ class Product(models.Model):
     sold = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0.0)])
     price = models.FloatField(default=0, validators=[MinValueValidator(0.0)])
     # availableColors = models.CharField(max_length=200, blank=True, null=True)
-    imageCover = models.ImageField(upload_to=generate_image_filename, null=True, blank=True)
+    imageCover = models.ImageField(upload_to=generate_image_filename)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
     users_wishlist = models.ManyToManyField(get_user_model(), related_name='wishList', blank=True,editable=False)
@@ -32,9 +32,7 @@ class Product(models.Model):
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
     def all_colors(self):
-        l = []
-        for i in self.colors.all():
-            l.append(i.name)
+        l = [i.name for i in self.colors.all()]
         return l
 
     def add_colors(self,colors):
@@ -47,9 +45,8 @@ class Product(models.Model):
 
     def add_images(self, images):
         for i in images:
-            self.images.add(i)
-            self.save()
-        return self.images
+            color_instance, created = Image.objects.get_or_create(img=i, product=self)
+        # return self.images
 
     def save(self, *args, **kwargs):
         if not self.slug:

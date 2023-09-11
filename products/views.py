@@ -13,7 +13,8 @@ class ProductView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     pagination_class = Pagination
-    permission_classes = [IsOwnerOrReadOnly,IsAdminOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly, IsAdminOrReadOnly]
+
     # def create(self, request, *args, **kwargs):
     #     # Ensure 'owner' field is set to the currently authenticated user
     #
@@ -31,11 +32,18 @@ class ProductView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
-        res = super().create(request,*args,**kwargs)
+        res = super().create(request, *args, **kwargs)
         colors = request.data.getlist('colors')
+        images = request.data.getlist('images')
 
         if colors:
             product_data = res.data
             product = Product.objects.get(pk=product_data['id'])
             product.add_colors(colors)
+
+        if images:
+            product_data = res.data
+            product = Product.objects.get(pk=product_data['id'])
+            product.add_images(images)
+
         return res
