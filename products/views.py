@@ -1,4 +1,5 @@
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from Utilities.Pagination import Pagination
@@ -9,26 +10,13 @@ from products.serializers import ProductSerializer
 
 # Create your views here.
 
-class ProductView(generics.ListCreateAPIView):
+class ProductsView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     pagination_class = Pagination
     permission_classes = [IsOwnerOrReadOnly, IsAdminOrReadOnly]
 
-    # def create(self, request, *args, **kwargs):
-    #     # Ensure 'owner' field is set to the currently authenticated user
-    #
-    #     # Use the serializer to validate and save the data
-    #     request.data.user = request.user.id
-    #     serializer = self.get_serializer(data=request.data,context={'request': request})
-    #     serializer.is_valid(raise_exception=True)
-    #     # serializer.data['owner'] = request.user.id
-    #     serializer.save(user=request.data.user)
-    #
-    #     return Response({'status': 'success', 'data': serializer.data}, status=status.HTTP_201_CREATED)
-
     def perform_create(self, serializer):
-        # Set the 'owner' field to the currently authenticated user
         serializer.save(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
@@ -47,3 +35,16 @@ class ProductView(generics.ListCreateAPIView):
             product.add_images(images)
 
         return res
+
+
+class ProductDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    pagination_class = Pagination
+    permission_classes = [IsOwnerOrReadOnly, IsAdminOrReadOnly]
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance=instance)
+        return Response({'status': 'success'}, status=status.HTTP_200_OK)
+

@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.urls import path
 
-from products.views import ProductView
+from products.views import ProductsView, ProductDetailsView
 
 urlpatterns = [
-    path('',ProductView.as_view())
+    path('', ProductsView.as_view()),
+    path('<int:pk>', ProductDetailsView.as_view())
 ]
 
 
