@@ -202,3 +202,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
+# APPEND_SLASH=False

@@ -15,9 +15,9 @@ from categories.models import Category
 # Create your models here.
 
 class Product(models.Model):
-    _id = models.IntegerField(blank=True, null=True,editable=False)
+    _id = models.IntegerField(blank=True, null=True, editable=False)
     title = models.CharField(max_length=30)
-    slug = models.SlugField(max_length=40, blank=True,editable=False)
+    slug = models.SlugField(max_length=40, blank=True, editable=False)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, editable=False)
     description = models.TextField(max_length=600, blank=True)
     quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0.0)])
@@ -27,7 +27,7 @@ class Product(models.Model):
     imageCover = models.ImageField(upload_to=generate_image_filename)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
-    users_wishlist = models.ManyToManyField(get_user_model(), related_name='wishList', blank=True,editable=False)
+    users_wishlist = models.ManyToManyField(get_user_model(), related_name='wishList', blank=True, editable=False)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
@@ -35,7 +35,14 @@ class Product(models.Model):
         l = [i.name for i in self.colors.all()]
         return l
 
-    def add_colors(self,colors):
+    def delete_colors(self):
+        for i in self.colors.all():
+            i.delete()
+    def delete_images(self):
+        for i in self.images.all():
+            i.delete()
+
+    def add_colors(self, colors):
         for color_name in colors:
             color_instance, created = Color.objects.get_or_create(name=color_name, product=self)
 
@@ -61,8 +68,8 @@ class Product(models.Model):
 
 
 class Color(models.Model):
-    name = models.CharField(max_length=20,blank=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='colors',blank=True,null=True)
+    name = models.CharField(max_length=20, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='colors', blank=True, null=True)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
