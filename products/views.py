@@ -35,6 +35,9 @@ class ProductsView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
+        if 'imageCover' not in request.data:
+            return Response({'imageCover': 'The image cover is required'},
+                            status=status.HTTP_400_BAD_REQUEST)
         res = super().create(request, *args, **kwargs)
         setImagesAndColors(request=request, res=res)
         return res
@@ -54,9 +57,9 @@ class ProductDetailsView(generics.RetrieveUpdateDestroyAPIView):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         res = super().update(request, *args, **kwargs)
-        if not partial or (partial and len(request.data.getlist('images')) > 0):
+        if not partial or len(request.data.getlist('images')) > 0:
             self.get_object().delete_images()
-        if not partial or (partial and len(request.data.getlist('colors'))):
+        if not partial or len(request.data.getlist('colors')):
             self.get_object().delete_colors()
         setImagesAndColors(res=res, request=request)
 
