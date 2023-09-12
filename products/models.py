@@ -45,12 +45,10 @@ class Product(models.Model):
         return l
 
     def delete_colors(self):
-        for i in self.colors.all():
-            i.delete()
+        self.colors.all().delete()
 
     def delete_images(self):
-        for i in self.images.all():
-            i.delete()
+        self.images.all().delete()
 
     def add_colors(self, colors):
         for color_name in colors:

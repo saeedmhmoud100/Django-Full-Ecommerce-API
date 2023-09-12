@@ -8,6 +8,7 @@ class Pagination(PageNumberPagination):
     max_page_size = 100
 
     def __int__(self):
+        print('hh')
         if self.request.get('page_size'):
             self.page_size = self.request.get('page_size')
         return super().__int__()
