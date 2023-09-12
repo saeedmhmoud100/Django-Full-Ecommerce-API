@@ -19,6 +19,7 @@ class ProductSerializer(serializers.ModelSerializer):
     colors = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
     imageCover = serializers.ImageField(required=False)
+    title = serializers.CharField(max_length=30,required=False)
 
     class Meta:
         model = Product

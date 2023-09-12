@@ -1,8 +1,10 @@
+from django.http import Http404
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from Utilities.Pagination import Pagination
-from Utilities.permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsStaffOrReadOnly
+from Utilities.permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsStaffOrReadOnly, IsAdminOrOwnerOrReadOnly
 from products.models import Product
 from products.serializers import ProductSerializer
 
@@ -38,6 +40,9 @@ class ProductsView(generics.ListCreateAPIView):
         if 'imageCover' not in request.data:
             return Response({'imageCover': 'The image cover is required'},
                             status=status.HTTP_400_BAD_REQUEST)
+        if 'title' not in request.data:
+            return Response({'imageCover': 'The title is required'},
+                            status=status.HTTP_400_BAD_REQUEST)
         res = super().create(request, *args, **kwargs)
         setImagesAndColors(request=request, res=res)
         return res
@@ -47,7 +52,13 @@ class ProductDetailsView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     pagination_class = Pagination
-    permission_classes = [IsOwnerOrReadOnly, IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrOwnerOrReadOnly,IsAuthenticatedOrReadOnly]
+
+    def get_object(self):
+        res = super().get_object()
+        if res.active or self.request.user.is_superuser or self.request.user == res.user:
+            return res
+        raise Http404("Product not found")
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
