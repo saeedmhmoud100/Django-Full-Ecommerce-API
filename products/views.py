@@ -76,3 +76,27 @@ class ProductDetailsView(generics.RetrieveUpdateDestroyAPIView):
 
         return Response({'status': 'success', 'data': ProductSerializer(self.get_object()).data},
                         status=status.HTTP_200_OK)
+
+
+class LoggedUserProductsView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    pagination_class = Pagination
+
+    def get_queryset(self):
+        res = super().get_queryset()
+        if self.request.user.is_superuser:
+            return res
+        elif self.request.user.is_staff:
+            return Product.objects.filter(user=self.request.user)
+        else:
+            return Product.objects.none()
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if queryset.exists():
+            serializer = self.get_serializer(queryset, many=True)
+            return Response({'status': 'success', 'data': serializer.data}, status=status.HTTP_200_OK)
+        return Response({'status': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
