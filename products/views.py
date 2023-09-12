@@ -2,7 +2,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 
 from Utilities.Pagination import Pagination
-from Utilities.permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
+from Utilities.permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsStaffOrReadOnly
 from products.models import Product
 from products.serializers import ProductSerializer
 
@@ -26,10 +26,10 @@ def setImagesAndColors(request, res):
 
 
 class ProductsView(generics.ListCreateAPIView):
-    queryset = Product.objects.all()
+    queryset = Product.objects.is_active()
     serializer_class = ProductSerializer
     pagination_class = Pagination
-    permission_classes = [IsOwnerOrReadOnly, IsAdminOrReadOnly]
+    permission_classes = [IsStaffOrReadOnly, IsAdminOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

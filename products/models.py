@@ -14,6 +14,12 @@ from categories.models import Category
 
 # Create your models here.
 
+
+class ProductManager(models.Manager):
+    def is_active(self):
+        return self.get_queryset().filter(active=True)
+
+
 class Product(models.Model):
     _id = models.IntegerField(blank=True, null=True, editable=False)
     title = models.CharField(max_length=30)
@@ -28,8 +34,11 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
     users_wishlist = models.ManyToManyField(get_user_model(), related_name='wishList', blank=True, editable=False)
+    active = models.BooleanField(default=True)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
+
+    objects = ProductManager()
 
     def all_colors(self):
         l = [i.name for i in self.colors.all()]
@@ -38,6 +47,7 @@ class Product(models.Model):
     def delete_colors(self):
         for i in self.colors.all():
             i.delete()
+
     def delete_images(self):
         for i in self.images.all():
             i.delete()
