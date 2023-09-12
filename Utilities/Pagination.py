@@ -19,7 +19,7 @@ class Pagination(PageNumberPagination):
         previous_page_number = self.page.previous_page_number() if self.page.has_previous() else None
         # print(self.get_page_size(request=self.request))
         return Response({
-            'result': self.page.paginator.count,
+            'results': self.page.paginator.count,
             'PaginationData': {
                 'numberOfPages': self.page.paginator.num_pages,
                 'pageNow': self.page.number,

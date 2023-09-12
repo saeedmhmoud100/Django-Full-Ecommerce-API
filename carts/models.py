@@ -22,7 +22,7 @@ class Cart(models.Model):
     _id = models.IntegerField(null=True, blank=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='carts')
     total_price = models.FloatField(default=0, blank=True, null=True)
-    coupon = models.IntegerField(default=0, blank=True, null=True)
+    coupon = models.ForeignKey(Coupon, blank=True, null=True,on_delete=models.SET_NULL)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
@@ -30,11 +30,11 @@ class Cart(models.Model):
         try:
             c = Coupon.objects.filter(name=val).first()
             if c.expire > now:
-                self.coupon = c.discount
+                self.coupon = c
             else:
-                self.coupon = 0
+                self.coupon.discount = 0
         except Coupon.DoesNotExist:
-            self.coupon = 0
+            self.coupon = None
             return 'Dose Not Exist'
 
     def get_all_cart_items(self):
@@ -54,18 +54,19 @@ class Cart(models.Model):
         for i in self.cartItems.all():
             t += i.get_all_price()
 
-        if self.coupon > 0.0:
-            t *= (1-self.coupon / 100)
-            print(t)
+        if self.coupon is not None:
+            if self.coupon.discount > 0.0:
+                t *= (1-self.coupon.discount / 100)
         self.total_price = t
         return t
 
     def save(self, *args, **kwargs):
-        if self._id:
+        if self.id:
             if self.cartItems.exists():
                 self.calc_total_price()
         super().save(*args, **kwargs)
-        if self.id!= self._id:
+
+        if self.id != self._id:
             self._id = self.id
 
 
