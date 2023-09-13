@@ -22,17 +22,23 @@ def cart(request):
     return Response({}, status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['POST'])
+@api_view(['POST','DELETE'])
 @permission_classes([IsAuthenticated])
-def cartChange(request, pk):
-    if request.method == 'POST' and not request.user.is_superuser:
-        cartItem = request.user.cart.cartItems.filter(product_id=pk)
-        if cartItem.exists():
-            cartItem.delete()
-        else:
-            CartItem.objects.create(cart=request.user.cart, product_id=pk)
-        return Response(CartSerializer(instance=request.user.cart).data,status=status.HTTP_200_OK)
+def cartItemsChange(request, pk):
+    if not request.user.is_superuser:
+        if request.method == 'POST':
+            c,t = CartItem.objects.get_or_create(cart=request.user.cart, product_id=pk)
+            return Response({'status':'success','data':CartSerializer(instance=request.user.cart).data},status=status.HTTP_200_OK)
+
+        elif request.method == 'DELETE':
+            try:
+                CartItem.objects.filter(product_id=pk).delete()
+                return Response({'status':'success','data':CartSerializer(instance=request.user.cart).data},status=status.HTTP_200_OK)
+            except: pass
+
     return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
