@@ -17,7 +17,7 @@ Including another URLconf
 from django.urls import path
 
 from brands.views import router
-from users.views import cart
+from carts.views import cart
 
 urlpatterns = [
     path('',cart)

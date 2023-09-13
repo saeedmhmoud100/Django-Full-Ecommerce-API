@@ -8,7 +8,10 @@ from carts.models import Cart
 
 @receiver(post_save, sender=get_user_model())
 def create_user_cart(sender, instance, created, **kwargs):
-    if created:
+    # print(created)
+    # print(instance.is_superuser != True)
+    # print(created & instance.is_superuser != True) wrong condition
+    if created and (instance.is_superuser != True):
         c = Cart(user=instance)
         c.save()
 
