@@ -17,10 +17,14 @@ class Coupon(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self,*args,**kwargs):
+        super().save(*args,**kwargs)
+        if self.id != self._id:
+            self._id = self.id
 
 class Cart(models.Model):
     _id = models.IntegerField(null=True, blank=True)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='carts')
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='cart', null=True, blank=True)
     total_price = models.FloatField(default=0, blank=True, null=True)
     coupon = models.ForeignKey(Coupon, blank=True, null=True,on_delete=models.SET_NULL)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)

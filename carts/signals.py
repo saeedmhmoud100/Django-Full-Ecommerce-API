@@ -24,13 +24,13 @@ def calc_total_cart_price(sender, instance, **kwargs):
 # Connect the signal
 post_delete.connect(calc_total_cart_price, sender=CartItem)
 
-@receiver(post_save, sender=Order)
-def create_new_cart_when_order(sender, instance, created, **kwargs):
-    if created:
-        # Create a new cart and assign it to the user
-        new_cart = Cart.objects.create(user=instance.user)
-        instance.user.cart = new_cart
-        instance.user.save()
-
-
-post_save.connect(calc_total_cart_price, sender=Order)
+# @receiver(post_save, sender=Order)
+# def create_new_cart_when_order(sender, instance, created, **kwargs):
+#     if created:
+#         # Create a new cart and assign it to the user
+#         new_cart = Cart.objects.create(user=instance.user)
+#         instance.user.cart = new_cart
+#         instance.user.save()
+#
+#
+# post_save.connect(calc_total_cart_price, sender=Order)
