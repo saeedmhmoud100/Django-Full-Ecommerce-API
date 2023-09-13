@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from carts.models import CartItem, Cart, Coupon
+from carts.models import CartItem, Cart
 
 
 # Register your models here.
@@ -21,9 +21,3 @@ class AdminCart(admin.ModelAdmin):
         product_price.short_description = 'Product Price'
 
     inlines = [AdminCartItems]
-
-@admin.register(Coupon)
-class ModelNameAdmin(admin.ModelAdmin):
-    exclude = ('_id',)
-    list_display = ('id','name','expire','discount')
-    list_display_links = ('id','name')

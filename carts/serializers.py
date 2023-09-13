@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from carts.models import Cart, CartItem, Coupon
+from carts.models import Cart, CartItem
+from coupons.models import Coupon
+from coupons.serializers import CouponSerializer
 from products.models import Image, Color, Product
 from products.serializers import ProductSerializer
 
@@ -10,13 +12,6 @@ class CartItemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ['id','quantity','product','createdAt','updatedAt','_id']
-        # fields = ['name']
-
-
-class CouponSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Coupon
-        fields = '__all__'
         # fields = ['name']
 
 

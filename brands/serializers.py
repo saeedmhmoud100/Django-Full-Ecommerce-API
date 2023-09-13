@@ -9,3 +9,4 @@ class BrandSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+

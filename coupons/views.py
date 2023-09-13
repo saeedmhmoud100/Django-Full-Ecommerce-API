@@ -1,21 +1,21 @@
+from django.shortcuts import render
 from rest_framework import viewsets, routers
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAdminUser
 
 from Utilities.Pagination import Pagination
-from Utilities.permissions import IsAdminOrReadOnly
-from brands.models import Brand
-from brands.serializers import BrandSerializer
+from coupons.models import Coupon
+from coupons.serializers import CouponSerializer
 
 
 # Create your views here.
 
 
-
 class BrandViewSet(viewsets.ModelViewSet):
-    queryset = Brand.objects.all()
-    serializer_class = BrandSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    queryset = Coupon.objects.all()
+    serializer_class = CouponSerializer
+    permission_classes = [IsAdminUser]
     pagination_class = Pagination
+    lookup_field = 'name'
     # authentication_classes = [JSONWebTokenAuthentication]
 
 router = routers.DefaultRouter()
