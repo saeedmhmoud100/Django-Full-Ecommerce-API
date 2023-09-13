@@ -1,5 +1,10 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from brands.models import Brand
+from brands.serializers import BrandSerializer
+from categories.models import Category
+from categories.serializers import CategorySerializer
 from products.models import Image, Color, Product
 
 
@@ -20,12 +25,15 @@ class ProductSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     imageCover = serializers.ImageField(required=False)
     title = serializers.CharField(max_length=30,required=False)
+    category = CategorySerializer(Category)
+    brand = BrandSerializer(Brand)
+
 
     class Meta:
         model = Product
-        fields = ['id', 'title', 'slug', 'description', 'quantity', 'sold', 'price','active', 'imageCover',
+        fields = ['id', 'title', 'slug', 'description', 'quantity', 'sold', 'price','active','user', 'imageCover',
                   'images', 'colors',
-                  'user', 'category', 'brand', 'createdAt', 'updatedAt', '_id']
+                   'category', 'brand', 'createdAt', 'updatedAt', '_id']
         # fields = '__all__'
 
     def get_colors(self, obj):
