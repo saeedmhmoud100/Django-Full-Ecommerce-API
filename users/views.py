@@ -32,11 +32,24 @@ class WishList(APIView):
 def wishlistChange(request, pk):
     try:
         user = get_user_model().objects.get(pk=request.user.pk)
-        print(request.method)
         if request.method == 'POST':
             Product.objects.get(pk=pk).users_wishlist.add(user)
         elif request.method == 'DELETE':
             Product.objects.get(pk=pk).users_wishlist.remove(user)
-        return Response({'status':'success','data':UserWishListSerializer(instance=user).data},status=status.HTTP_200_OK)
-    except :
-        return Response({'status':'fail'},status=status.HTTP_400_BAD_REQUEST)
+        return Response({'status': 'success', 'data': UserWishListSerializer(instance=user).data},
+                        status=status.HTTP_200_OK)
+    except:
+        return Response({'status': 'fail'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def clearWishlist(request):
+    try:
+        if request.method == 'POST':
+            user = get_user_model().objects.get(pk=request.user.pk)
+            user.wishlist.clear()
+        return Response({'status': 'success', 'data': UserWishListSerializer(instance=user).data},
+                        status=status.HTTP_200_OK)
+    except:
+        return Response({'status': 'fail'}, status=status.HTTP_400_BAD_REQUEST)
