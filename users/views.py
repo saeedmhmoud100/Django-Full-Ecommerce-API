@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 
 from Utilities.Pagination import Pagination
 from Utilities.permissions import IsNotAdmin
+from products.models import Product
 from users.models import MyUser
 from users.serializers import UserWishListSerializer
 
@@ -19,8 +20,18 @@ class WishList(APIView):
     serializer_class = UserWishListSerializer
     permission_classes = [IsAuthenticated]
 
-    def get(self,*args,**kwargs):
+    def get(self, *args, **kwargs):
         queryset = get_user_model().objects.filter(pk=self.request.user.id)
         if queryset:
-            return Response(UserWishListSerializer(instance=queryset,many=True).data[0])
+            return Response(UserWishListSerializer(instance=queryset, many=True).data[0])
         return Response({'status': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def wishlistChange(request, pk):
+    user = get_user_model().objects.get(pk=request.user.pk)
+    if request.method == 'POST':
+        Product.objects.get(pk=pk).users_wishlist.add(user)
+        return Response({'status':'success','data':UserWishListSerializer(instance=user).data},status=status.HTTP_200_OK)
+    return Response({'status':'fail'},status=status.HTTP_400_BAD_REQUEST)
