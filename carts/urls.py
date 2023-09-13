@@ -17,10 +17,11 @@ Including another URLconf
 from django.urls import path
 
 from brands.views import router
-from carts.views import cart, cartItemsChange, updateCartItemCount
+from carts.views import cart, cartItemsChange, updateCartItemCount, clearCart
 
 urlpatterns = [
     path('',cart),
+    path('clear',clearCart),
     path('<int:pk>',cartItemsChange), # pk for the product
     path('item/<int:pk>',updateCartItemCount), # pk for the cart item
 ]
