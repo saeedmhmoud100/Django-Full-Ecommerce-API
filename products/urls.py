@@ -21,7 +21,7 @@ from products.views import ProductsView, ProductDetailsView, LoggedUserProductsV
 urlpatterns = [
     path('', ProductsView.as_view()),
     path('<int:pk>', ProductDetailsView.as_view()),
-    path('user', LoggedUserProductsView.as_view())
+    path('user', LoggedUserProductsView.as_view()),
 ]
 
 
