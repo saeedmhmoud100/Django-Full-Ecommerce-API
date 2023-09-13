@@ -20,8 +20,8 @@ from users.views import WishList, wishlistChange, clearWishlist
 urlpatterns = [
 
     path('wishlist', WishList.as_view()),
-    path('wishlist/<int:pk>', wishlistChange),
     path('wishlist/clear', clearWishlist),
+    path('wishlist/<int:pk>', wishlistChange),
 ]
 
 

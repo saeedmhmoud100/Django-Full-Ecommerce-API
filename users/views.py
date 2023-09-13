@@ -42,14 +42,14 @@ def wishlistChange(request, pk):
         return Response({'status': 'fail'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
+@api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def clearWishlist(request):
     try:
-        if request.method == 'POST':
+        if request.method == 'DELETE':
             user = get_user_model().objects.get(pk=request.user.pk)
             user.wishlist.clear()
-        return Response({'status': 'success', 'data': UserWishListSerializer(instance=user).data},
-                        status=status.HTTP_200_OK)
+            return Response({'status': 'success', 'data': UserWishListSerializer(instance=user).data},
+                            status=status.HTTP_200_OK)
     except:
         return Response({'status': 'fail'}, status=status.HTTP_400_BAD_REQUEST)
