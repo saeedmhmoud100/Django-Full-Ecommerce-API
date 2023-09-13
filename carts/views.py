@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from Utilities.permissions import IsNotAdmin
 from carts.models import Cart, CartItem
-from carts.serializers import CartSerializer
+from carts.serializers import CartSerializer, CartItemsSerializer
 
 
 @api_view(['GET'])
@@ -32,4 +32,17 @@ def cartChange(request, pk):
         else:
             CartItem.objects.create(cart=request.user.cart, product_id=pk)
         return Response(CartSerializer(instance=request.user.cart).data,status=status.HTTP_200_OK)
+    return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def updateCartItemCount(request, pk,*args,**kwargs):
+    if request.method == 'POST' and not request.user.is_superuser:
+        try:
+            cartItem = request.user.cart.cartItems.get(pk=pk)
+            cartItem.quantity = request.data.get('quantity')
+            cartItem.save()
+            return Response({'status':'success','data':CartItemsSerializer(instance=cartItem).data},status=status.HTTP_200_OK)
+        except CartItem.DoesNotExist:
+                return Response({'status': "fail", 'msg': 'Cart item not found '},status=status.HTTP_404_NOT_FOUND)
     return Response({}, status=status.HTTP_400_BAD_REQUEST)
