@@ -8,7 +8,7 @@ from users_admin.serializers import UsersAdminSerializer
 
 
 # Create your views here.
-class GetAllUsers(generics.ListAPIView):
+class GetAllUsers(generics.ListCreateAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = UsersAdminSerializer
     permission_classes = [IsAdmin]

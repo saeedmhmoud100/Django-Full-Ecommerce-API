@@ -20,7 +20,7 @@ from users_admin.views import GetAllUsers
 
 urlpatterns = [
 
-    path('all', GetAllUsers.as_view()),
+    path('', GetAllUsers.as_view()),
 
 ]
 
