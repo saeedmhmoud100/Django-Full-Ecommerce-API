@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 from rest_framework import status, generics
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -12,6 +13,32 @@ from users.serializers import UserWishListSerializer, UserSerializer
 
 
 # Create your views here.
+
+
+class LoggedUser(generics.RetrieveUpdateDestroyAPIView):
+    queryset = get_user_model().objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
+    def get_object(self):
+        return self.request.user
+
+
+    def update(self, request, *args, **kwargs):
+        user = self.get_object()
+        new_password = request.data.get('password')
+
+        ser = UserSerializer(instance=request.user,data=request.data)
+        if ser.is_valid(raise_exception=True):
+            ser.save()
+            if new_password:
+                user.set_password(new_password)
+                user.save()
+
+        return Response({"status": "success",'data':UserSerializer(instance=self.get_object()).data}, status=status.HTTP_200_OK)
+
+
+
+
 
 class WishList(APIView):
     serializer_class = UserWishListSerializer
