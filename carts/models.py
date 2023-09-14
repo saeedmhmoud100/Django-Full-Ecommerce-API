@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.timezone import now
 
 from coupons.models import Coupon
-from products.models import Product
+from products.models import Product, Color
 
 
 class Cart(models.Model):
@@ -64,6 +64,7 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cartItems')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product')
     quantity = models.IntegerField(validators=[MinValueValidator(1), ], default=1)
+    color = models.ForeignKey(Color,on_delete=models.SET_NULL,null=True,blank=True)
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 

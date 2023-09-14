@@ -5,6 +5,7 @@ from rest_framework.response import Response
 
 from carts.models import Cart, CartItem
 from carts.serializers import CartSerializer, CartItemsSerializer
+from products.models import Color
 
 
 @api_view(['GET'])
@@ -25,9 +26,18 @@ def cart(request):
 def cartItemsChange(request, pk):
     if not request.user.is_superuser:
         if request.method == 'POST':
-            c, t = CartItem.objects.get_or_create(cart=request.user.cart, product_id=pk)
-            return Response({'status': 'success', 'data': CartSerializer(instance=request.user.cart).data},
-                            status=status.HTTP_200_OK)
+            # try:
+                color_name = request.data.get('color')
+                color = None
+                if color_name and Color.objects.filter(product_id=pk, name=color_name).exists():
+                    color = Color.objects.get(product_id=pk, name=color_name)
+                c, t = CartItem.objects.get_or_create(cart=request.user.cart, product_id=pk, color=color)
+
+                return Response({'status': 'success', 'data': CartSerializer(instance=request.user.cart).data},
+                                status=status.HTTP_200_OK)
+
+            # except:
+            #     return Response({'status': 'fail'}, status=status.HTTP_400_BAD_REQUEST)
 
         elif request.method == 'DELETE':
             try:

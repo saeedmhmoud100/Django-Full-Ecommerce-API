@@ -17,7 +17,7 @@ class ImageSerializer(serializers.ModelSerializer):
 class ColorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Color
-        fields = ['name']
+        fields = ['id','name']
 
 
 class ProductSerializer(serializers.ModelSerializer):

@@ -90,14 +90,15 @@ class UserAddressesListView(generics.ListCreateAPIView):
     def get_queryset(self):
         return UserAddress.objects.filter(user=self.request.user)
 
-    def create(self, request, *args, **kwargs):
-        serializer = UserAddressesSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save(user=self.request.user)
-            return Response({'status': 'success', 'data': serializer.data}, status=status.HTTP_201_CREATED)
-        return Response({'status': 'fail'}, status=status.HTTP_400_BAD_REQUEST)
+    # def create(self, request, *args, **kwargs):
+    #     serializer = UserAddressesSerializer(data=request.data)
+    #     if serializer.is_valid(raise_exception=True):
+    #         serializer.save(user=self.request.user)
+    #         return Response({'status': 'success', 'data': serializer.data}, status=status.HTTP_201_CREATED)
+    #     return Response({'status': 'fail'}, status=status.HTTP_400_BAD_REQUEST)
 
-
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class UserAddressesDetailsView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserAddress.objects.all()
