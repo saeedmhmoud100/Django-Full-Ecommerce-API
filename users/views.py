@@ -51,8 +51,3 @@ def clearWishlist(request):
     except:
         return Response({'status': 'fail'}, status=status.HTTP_400_BAD_REQUEST)
 
-class GetAllUsers(generics.ListAPIView):
-    queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [IsAdmin]
-    pagination_class = Pagination
