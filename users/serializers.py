@@ -4,7 +4,13 @@ from rest_framework import serializers
 from brands.models import Brand
 from products.models import Product
 from products.serializers import ProductSerializer
-from users.models import MyUser
+from users.models import MyUser, UserAddress
+
+
+class UserAddressesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddress
+        fields = '__all__'
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -12,9 +18,14 @@ class UserSerializer(serializers.ModelSerializer):
     is_active = serializers.BooleanField(read_only=True)
     is_staff = serializers.BooleanField(read_only=True)
     is_superuser = serializers.BooleanField(read_only=True)
+    wishlist = serializers.SerializerMethodField()
+    addresses=UserAddressesSerializer(UserAddress,many=True)
     class Meta:
         model = get_user_model()
-        fields = ['id','username','first_name','last_name','email','is_active','is_staff','is_superuser','password']
+        fields = ['id','username','first_name','last_name','email','is_active','is_staff','is_superuser','password', 'addresses','wishlist']
+
+    def get_wishlist(self, obj):
+        return ProductSerializer(obj.wishlist.all(), many=True).data
 
 
 class UserWishListSerializer(serializers.ModelSerializer):
