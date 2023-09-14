@@ -34,7 +34,7 @@ class MyUser(AbstractUser, PermissionsMixin):
 
 
 class UserAddress(models.Model):
-    _id = models.IntegerField(blank=True, null=True)
+    _id = models.IntegerField(blank=True, null=True,editable=False)
     alias = models.CharField(max_length=100)
     details = models.TextField(max_length=500, null=True, blank=True)
     phone = models.CharField(max_length=50, null=True, blank=True)
@@ -45,8 +45,10 @@ class UserAddress(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        print('sdf')
         if self.id != self._id:
             self._id = self.id
+            self.save()
 
     def __str__(self):
         return str('(' + self.user.username + ') ' + self.alias)

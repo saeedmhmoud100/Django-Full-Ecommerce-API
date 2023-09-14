@@ -10,7 +10,8 @@ from users.models import MyUser, UserAddress
 class UserAddressesSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAddress
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ('user',)
 
 
 class UserSerializer(serializers.ModelSerializer):

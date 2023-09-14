@@ -7,9 +7,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from Utilities.Pagination import Pagination
-from Utilities.permissions import IsAdmin
+from Utilities.permissions import IsAdmin, IsOwnerOrReadOnly, IsOwner
 from products.models import Product
-from users.serializers import UserWishListSerializer, UserSerializer
+from users.models import UserAddress
+from users.serializers import UserWishListSerializer, UserSerializer, UserAddressesSerializer
 
 
 # Create your views here.
@@ -78,3 +79,20 @@ def clearWishlist(request):
     except:
         return Response({'status': 'fail'}, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+class UserAddressesListView(generics.ListCreateAPIView):
+    # queryset = UserAddress.objects.all()
+    serializer_class = UserAddressesSerializer
+    permission_classes = [IsAuthenticated,IsOwner]
+
+
+    def get_queryset(self):
+        return UserAddress.objects.filter(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        serializer = UserAddressesSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(user=self.request.user)
+            return Response({'status': 'success', 'data': serializer.data}, status=status.HTTP_201_CREATED)
+        return Response({'status': 'fail'}, status=status.HTTP_400_BAD_REQUEST)
