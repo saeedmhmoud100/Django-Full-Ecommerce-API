@@ -10,7 +10,7 @@ from coupons.serializers import CouponSerializer
 # Create your views here.
 
 
-class BrandViewSet(viewsets.ModelViewSet):
+class CouponViewSet(viewsets.ModelViewSet):
     queryset = Coupon.objects.all()
     serializer_class = CouponSerializer
     permission_classes = [IsAdminUser]
@@ -19,4 +19,4 @@ class BrandViewSet(viewsets.ModelViewSet):
     # authentication_classes = [JSONWebTokenAuthentication]
 
 router = routers.DefaultRouter()
-router.register(r'', BrandViewSet)
+router.register(r'', CouponViewSet)

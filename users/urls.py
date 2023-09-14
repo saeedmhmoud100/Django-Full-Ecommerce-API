@@ -15,13 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from users.views import WishList, wishlistChange, clearWishlist
+from users.views import WishList, wishlistChange, clearWishlist, registerUser
 
 urlpatterns = [
 
     path('wishlist', WishList.as_view()),
     path('wishlist/clear', clearWishlist),
     path('wishlist/<int:pk>', wishlistChange),
+
+
+    path('register', registerUser),
 ]
 
 

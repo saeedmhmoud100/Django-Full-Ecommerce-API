@@ -31,6 +31,14 @@ class IsNotAdmin(IsAdminUser):
         return not super().has_object_permission(request,view,obj)
 
 
+class IsNotAuthenticated(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        print(request.user.is_authenticated)
+        if request.user.is_authenticated:
+            return False
+        return True
+
+
 class IsStaffOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
