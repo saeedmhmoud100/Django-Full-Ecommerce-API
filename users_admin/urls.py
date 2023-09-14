@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.urls import path
 
-from users_admin.views import GetAllUsers
+from users_admin.views import GetAllUsers, UsersChange
 
 urlpatterns = [
 
     path('', GetAllUsers.as_view()),
+    path('<int:pk>', UsersChange.as_view()),
 
 ]
 
