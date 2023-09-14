@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
 from users.serializers import UserSerializer
 
@@ -13,14 +14,14 @@ from users.serializers import UserSerializer
 def registerUser(request):
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
+        password = request.data.get('password')
+        if password:
+            if len(password) < 8:
+                return Response({"password":'the password is not valid'})
         if serializer.is_valid():
             user = serializer.save()
-            password = request.data.get('password')
-            if password:
-                # if not user.check_password(password):
-                #     return Response({"password":'the password is not valid'})
-                user.set_password(password)
-                user.is_active = True
-                user.save()
+            user.set_password(password)
+            user.is_active = True
+            user.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
