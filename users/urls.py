@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from users.views import WishList, wishlistChange, clearWishlist, registerUser
+from users.views import WishList, wishlistChange, clearWishlist, getAllUsers
 
 urlpatterns = [
 
@@ -24,7 +24,8 @@ urlpatterns = [
     path('wishlist/<int:pk>', wishlistChange),
 
 
-    path('register', registerUser),
+    path('all', getAllUsers),
+
 ]
 
 

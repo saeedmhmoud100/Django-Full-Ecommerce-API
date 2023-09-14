@@ -1,33 +1,16 @@
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from Utilities.permissions import IsNotAuthenticated
+from Utilities.permissions import IsAdmin
 from products.models import Product
-from users.models import MyUser
 from users.serializers import UserWishListSerializer, UserSerializer
 
 
 # Create your views here.
-
-
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def registerUser(request):
-    if request.method == 'POST':
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            password = request.data.get('password')
-            if password:
-                user.set_password(password)
-                user.is_active = True
-                user.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=400)
 
 class WishList(APIView):
     serializer_class = UserWishListSerializer
@@ -66,3 +49,9 @@ def clearWishlist(request):
                             status=status.HTTP_200_OK)
     except:
         return Response({'status': 'fail'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAdmin])
+def getAllUsers(request):
+    if request.method == 'GET':
+        return Response(UserSerializer(instance=get_user_model().objects.all(),many=True).data)
