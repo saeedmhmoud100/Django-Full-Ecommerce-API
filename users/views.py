@@ -96,3 +96,10 @@ class UserAddressesListView(generics.ListCreateAPIView):
             serializer.save(user=self.request.user)
             return Response({'status': 'success', 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response({'status': 'fail'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class UserAddressesDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserAddress.objects.all()
+    serializer_class = UserAddressesSerializer
+    permission_classes = [IsAuthenticated,IsOwner]
