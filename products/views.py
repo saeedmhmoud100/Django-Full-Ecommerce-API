@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import Http404
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -33,22 +34,25 @@ class ProductsView(generics.ListCreateAPIView):
     pagination_class = Pagination
     permission_classes = [IsStaffOrReadOnly, IsAdminOrReadOnly]
 
-
     def list(self, request, *args, **kwargs):
-        queryset = self.queryset
-        serializer = self.serializer_class(instance=Product.objects.is_active(),many=True)
-
+        queryset = self.get_queryset()
         try:
             order = request.GET.get('sort')
-            serializer = self.serializer_class(instance=queryset.order_by(order),many=True)
-        except: None
+            queryset = queryset.order_by(order)
+        except:
+            None
 
+        try:
+            search = request.GET.get('search')
+            queryset = queryset.filter(Q(title__contains=search) | Q(description__contains=search))
+        except:
+            None
+
+        serializer = self.serializer_class(instance=queryset, many=True)
         return Response(serializer.data)
 
-
-
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user,active=True)
+        serializer.save(user=self.request.user, active=True)
 
     def create(self, request, *args, **kwargs):
         if 'imageCover' not in request.data:
