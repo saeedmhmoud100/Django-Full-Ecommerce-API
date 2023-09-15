@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.urls import path
 
-from .views import GetReviews
+from .views import GetReviews, ChangeReview
 
 urlpatterns = [
 
     path('', GetReviews.as_view()),
+    path('<int:pk2>', ChangeReview.as_view()),
 
 ]
 

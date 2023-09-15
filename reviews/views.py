@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import generics, status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.response import Response
 
 from Utilities.Pagination import Pagination
-from Utilities.permissions import IsNotAdmin, IsNotOwner
+from Utilities.permissions import IsNotAdmin, IsNotOwner, IsOwner, IsNotAdminOrReadOnly, IsOwnerOrReadOnly
 from products.models import Product
 from reviews.models import Reviews
 from reviews.serializers import ReviewsSerializer
@@ -17,7 +17,7 @@ class GetReviews(generics.ListCreateAPIView):
     queryset = Reviews
     serializer_class = ReviewsSerializer
     pagination_class = Pagination
-    permission_classes = [IsAuthenticatedOrReadOnly,IsNotAdmin,IsNotOwner]
+    permission_classes = [IsAuthenticatedOrReadOnly,IsNotAdminOrReadOnly,IsNotOwner]
 
     def get(self, request, *args, **kwargs):
         try:
@@ -34,3 +34,15 @@ class GetReviews(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         if not Reviews.objects.filter(user=self.request.user,product=Product.objects.get(id=self.kwargs['pk'])).exists():
             serializer.save(user=self.request.user, product=Product.objects.get(id=self.kwargs['pk']))
+
+
+class ChangeReview(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Reviews.objects.all()
+    serializer_class = ReviewsSerializer
+    # permission_classes = [AllowAny, IsOwnerOrReadOnly]
+    # lookup_field = 'pk2'
+
+    def get_object(self):
+        pk2 = self.kwargs.get('pk2')
+        review = get_object_or_404(self.queryset, pk=pk2)
+        return review
