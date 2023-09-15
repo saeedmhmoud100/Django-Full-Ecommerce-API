@@ -33,6 +33,20 @@ class ProductsView(generics.ListCreateAPIView):
     pagination_class = Pagination
     permission_classes = [IsStaffOrReadOnly, IsAdminOrReadOnly]
 
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.queryset
+        serializer = self.serializer_class(instance=Product.objects.is_active(),many=True)
+
+        try:
+            order = request.GET.get('sort')
+            serializer = self.serializer_class(instance=queryset.order_by(order),many=True)
+        except: None
+
+        return Response(serializer.data)
+
+
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user,active=True)
 
