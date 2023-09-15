@@ -118,3 +118,5 @@ class LoggedUserProductsView(generics.ListAPIView):
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
         return Response({'status': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+
+

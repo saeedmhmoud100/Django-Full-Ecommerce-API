@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Product, Reviews, Image, Color
+from reviews.models import Reviews
+from .models import Product, Image, Color
 
 
 # Register your models here.

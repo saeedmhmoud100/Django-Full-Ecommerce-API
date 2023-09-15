@@ -95,24 +95,6 @@ class Image(models.Model):
         return str(self.product)
 
 
-class Reviews(models.Model):
-    _id = models.IntegerField(blank=True, null=True)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='ratings', on_delete=models.CASCADE)
-    review = models.TextField(max_length=500)
-    rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
-    createdAt = models.DateTimeField(auto_now_add=True, editable=False)
-    updatedAt = models.DateTimeField(auto_now=now, editable=False)
-
-    def __str__(self):
-        return self.product.title + ' (' + str(self.rating) + ')'
-
-    def save(self, *args, **kwargs):
-        if not self._id:
-            self._id = self.id
-
-        # self.imageCover = self.images.first().img
-        super().save(*args, **kwargs)
 # from django.contrib.auth.models import User
 # from products.models import Product
 # u = User.objects.all().first()
