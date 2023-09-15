@@ -25,8 +25,9 @@ class ProductSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     imageCover = serializers.ImageField(required=False)
     title = serializers.CharField(max_length=30,required=False)
-    category = CategorySerializer(Category)
-    brand = BrandSerializer(Brand)
+    # category = serializers.PrimaryKeyRelatedField(read_only=True)
+    # brand = serializers.PrimaryKeyRelatedField(read_only=True)
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
 
 
     class Meta:

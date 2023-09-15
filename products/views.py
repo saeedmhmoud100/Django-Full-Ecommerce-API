@@ -34,7 +34,7 @@ class ProductsView(generics.ListCreateAPIView):
     permission_classes = [IsStaffOrReadOnly, IsAdminOrReadOnly]
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save(user=self.request.user,active=True)
 
     def create(self, request, *args, **kwargs):
         if 'imageCover' not in request.data:
