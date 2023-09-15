@@ -48,8 +48,11 @@ class ProductsView(generics.ListCreateAPIView):
         except:
             None
 
-        serializer = self.serializer_class(instance=queryset, many=True)
-        return Response(serializer.data)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response({'status': 'not found'}, status=status.HTTP_404_NOT_FOUND)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user, active=True)
