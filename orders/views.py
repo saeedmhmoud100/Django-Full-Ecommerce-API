@@ -14,10 +14,17 @@ from users.models import UserAddress
 
 
 class GetCreatOrders(generics.ListCreateAPIView):
-    queryset = Order.objects.all()
+    # queryset = Order.objects.all()
     serializer_class = OrderSerializer
     pagination_class = Pagination
     permission_classes = [IsAuthenticated & IsAdminOrNotStaff]
+
+    def get_queryset(self):
+        print(self.request.user)
+        if self.request.user.is_superuser:
+            return Order.objects.all()
+        else:
+            return Order.objects.filter(user=self.request.user)
 
 
     def create(self, request, *args, **kwargs):
