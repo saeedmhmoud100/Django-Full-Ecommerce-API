@@ -36,7 +36,10 @@ class Cart(models.Model):
         return l
 
     def __str__(self):
-        return f"({self.user.username}) Cart " + str(self.id)
+        if self.user is not None:
+            return f"({self.user.username}) Cart " + str(self.id)
+        else:
+            return f"({ self.order.user.username}) Cart " + str(self.id)
 
     def calc_total_price(self):
         t = 0.0
@@ -45,18 +48,19 @@ class Cart(models.Model):
 
         if self.coupon is not None:
             if self.coupon.discount > 0.0:
-                t *= (1-self.coupon.discount / 100)
+                t *= (1- self.coupon.discount / 100)
         self.total_price = t
         return t
 
     def save(self, *args, **kwargs):
+        if self.id != self._id:
+            self._id = self.id
+            super().save(*args, **kwargs)
         if self.id:
             if self.cartItems.exists():
                 self.calc_total_price()
         super().save(*args, **kwargs)
 
-        if self.id != self._id:
-            self._id = self.id
 
 
 class CartItem(models.Model):
@@ -72,4 +76,7 @@ class CartItem(models.Model):
         return self.product.price * self.quantity
 
     def __str__(self):
-        return f"({self.product.title}) product for user ({self.cart.user.username})"
+        if self.cart.user is not None:
+            return f"({self.product.title}) product for user ({self.cart.user.username})"
+        else:
+            return f"({self.product.title}) product for user ({self.cart.order.user.username})"

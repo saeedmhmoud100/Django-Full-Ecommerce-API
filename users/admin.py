@@ -26,5 +26,8 @@ class UserAdmin(UserAdmin):
 @admin.register(UserAddress)
 class UserAddressAdmin(admin.ModelAdmin):
     exclude = ('_id',)
+    readonly_fields = ('id',)
+    list_display = ('alias','id')
+    list_display_links = ('alias','id')
 
 # admin.site.register(CartItem)

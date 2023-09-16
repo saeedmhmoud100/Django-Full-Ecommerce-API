@@ -45,7 +45,6 @@ class UserAddress(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        print('sdf')
         if self.id != self._id:
             self._id = self.id
             self.save()

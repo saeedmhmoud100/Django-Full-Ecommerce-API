@@ -10,7 +10,7 @@ class Coupon(models.Model):
     _id = models.IntegerField(null=True, blank=True,editable=False)
     name = models.CharField(max_length=50, unique=True)
     expire = models.DateTimeField(default=now)
-    discount = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
+    discount = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(100.0)])
     createdAt = models.DateTimeField(auto_now_add=True, editable=False)
     updatedAt = models.DateTimeField(auto_now=now, editable=False)
 
