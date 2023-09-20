@@ -38,10 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
+    'djoser',
     # 'rest_framework.authtoken',
+
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+
     'authentication',
     'categories',
     'brands',
@@ -207,3 +211,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 # APPEND_SLASH=False
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST_USER = 'saeedmhmoud10@gmail.com'
+EMAIL_HOST_PASSWORD = 'kkliuqblmbjqkqgd'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    # 'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    # 'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    # 'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {},
+}
