@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-&0v-(gxu_%m598ltu*0hqen&j$+8l_1_*bdyn+f-^rs-mr+u$6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
 
+    "corsheaders",
+
     'authentication',
     'categories',
     'brands',
@@ -61,6 +63,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -226,3 +229,11 @@ DJOSER = {
     # 'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {},
 }
+
+# ALLOWED_HOSTS=["*"]
+CORS_ALLOWED_ORIGINS = [
+    'https://*',
+    'http://localhost:3000',
+]
+CORS_ORIGIN_ALLOW_ALL = True
+
