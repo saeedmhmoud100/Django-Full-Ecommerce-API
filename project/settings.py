@@ -201,40 +201,22 @@ AUTHENTICATION_BACKENDS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-# STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Media files
-# MEDIA_URL = '/uploads/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
-# STATIC_ROOT = BASE_DIR / 'static'
+MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+STATIC_ROOT = BASE_DIR / 'static'
 # STATICFILES_DIRS = [(os.path.join(BASE_DIR, 'staticfiles'))]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 
-STATIC_URL = "https://django-ecommerce-api.onrender.com/static/"
-
-STATIC_ROOT = "/home/kcsl/web/django-ecommerce-api.onrender.com/public_html/static/"
-
-MEDIA_URL = "https://django-ecommerce-api.onrender.com/uploads/"
-MEDIA_ROOT = "/home/kcsl/web/django-ecommerce-api.onrender.com/public_html/uploads/"
-
-
-
-
-
-
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-
-
-
-
-
-
 
 # APPEND_SLASH=False
 
@@ -256,6 +238,7 @@ DJOSER = {
 # ALLOWED_HOSTS=["*"]
 CORS_ALLOWED_ORIGINS = [
     'https://*',
+    'http://*',
     'http://localhost:3000',
 ]
 CORS_ORIGIN_ALLOW_ALL = True
