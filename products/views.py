@@ -32,7 +32,7 @@ class ProductsView(generics.ListCreateAPIView):
     queryset = Product.objects.is_active()
     serializer_class = ProductSerializer
     pagination_class = Pagination
-    permission_classes = [IsStaffOrReadOnly, IsAdminOrReadOnly]
+    permission_classes = [IsStaffOrReadOnly|IsAdminOrReadOnly]
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -64,7 +64,10 @@ class ProductsView(generics.ListCreateAPIView):
         if 'title' not in request.data:
             return Response({'imageCover': 'The title is required'},
                             status=status.HTTP_400_BAD_REQUEST)
-        res = super().create(request, *args, **kwargs)
+        if ProductSerializer(data=request.data).is_valid():
+            res = super().create(request, *args, **kwargs)
+        else:
+            return Response({'status':'fail'},status=status.HTTP_400_BAD_REQUEST)
         setImagesAndColors(request=request, res=res)
         return res
 
