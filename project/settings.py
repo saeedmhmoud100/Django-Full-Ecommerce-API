@@ -240,6 +240,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://*',
     'https://*',
     'http://localhost:3000',
+    'https://django-ecommerce-api.onrender.com',
 ]
 
 CORS_ALLOW_HEADERS = [
