@@ -29,5 +29,5 @@ class Pagination(PageNumberPagination):
             },
             'DataCountPerPage': self.page_size,
             'DataCountInThisPage': len(data),
-            'Data': data,
+            'data': data,
         })
