@@ -237,9 +237,20 @@ DJOSER = {
 
 # ALLOWED_HOSTS=["*"]
 CORS_ALLOWED_ORIGINS = [
-    'https://*',
     'http://*',
+    'https://*',
     'http://localhost:3000',
 ]
-CORS_ORIGIN_ALLOW_ALL = True
 
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+CORS_ORIGIN_ALLOW_ALL = True
