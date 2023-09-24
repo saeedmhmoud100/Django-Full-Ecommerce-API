@@ -1,6 +1,4 @@
-#### ✨ I am happy to share with you my latest Django project for the API Development.
-
-## 🎖️Project features
+# 🎖️Project features
 
 ## Authentication System📌
  -- Register with (username, email, and password)<br />
