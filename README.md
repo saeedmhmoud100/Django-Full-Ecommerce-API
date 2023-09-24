@@ -2,11 +2,11 @@
 
 ## 🎖️Project features
 
-### Authentication System📌
+## Authentication System📌
  -- Register with (username, email, and password)<br />
  -- Login with email or username<br />
  -- Reset password<br />
-### Products📌
+## Products📌
   -- Only activated products will be shown for the user <br />
   -- Sorting products by [price from [lowest or highest ], best sellers, top rating, price]<br />
   -- Advanced Search<br />
@@ -29,7 +29,7 @@
 
 ## Users Features📌
  ### **-- three types of users:**
- -- Default User:<br />
+ #### -- Default User:<br />
    - can see all his info
    - can update the data
    - change password
@@ -37,12 +37,12 @@
    - add products to cart
    - make an order
 
--- staff user:<br />
+#### -- staff user:<br />
    - can add a product
    - can delete and update his own products
    - can activate or deactivate his own products 
 
--- Admin User **(can control everything in the website)**
+#### -- Admin User **(can control everything in the website)**
    - categories **[get all, add, delete, update]**
    - brands **[get all, add, delete, update]**
    - products **[get all, add, delete, update]**
