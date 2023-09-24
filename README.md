@@ -35,12 +35,12 @@
    - add products to cart
    - make an order
 
-- #### -- staff user:<br />
+ - #### -- staff user:<br />
    - can add a product
    - can delete and update his own products
    - can activate or deactivate his own products 
 
-- #### -- Admin User **(can control everything in the website)**
+ - #### -- Admin User **(can control everything in the website)**
    - categories **[get all, add, delete, update]**
    - brands **[get all, add, delete, update]**
    - products **[get all, add, delete, update]**
@@ -50,12 +50,10 @@
 
 
 #### The project is completed and ready to use, and I'll include a Postman collection as a small documentation that could help you with its usage.
-So If you're interested in checking it out, the code is available on my GitHub repository
 
-👨🏻‍💻GitHub Link: https://github.com/saeedmhmoud100/Django-Full-Ecommerce-API
-<br/>💻Live version: https://django-ecommerce-api.onrender.com/api/products/ <br />
+💻[Live version](https://django-ecommerce-api.onrender.com/api/products/) <br />
 
-postman collection Link: https://www.postman.com/interstellar-station-543920/workspace/django-ecommerce-api/collection/14788230-5b06dde3-90ae-4cde-9e77-df739e34a40f?action=share&creator=14788230&active-environment=14788230-614e2c46-6648-4595-9b26-6bed45e6b170 
+[Postman Collection Link](https://www.postman.com/interstellar-station-543920/workspace/django-ecommerce-api/collection/14788230-5b06dde3-90ae-4cde-9e77-df739e34a40f?action=share&creator=14788230&active-environment=14788230-614e2c46-6648-4595-9b26-6bed45e6b170) 
 
 I welcome any feedback or comments you may have. Your insights are greatly valued and will be incorporated into my ongoing efforts to enhance my skills. Thank you for your time.
 
