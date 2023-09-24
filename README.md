@@ -1,6 +1,5 @@
-# 🎖️Project features
-
 live url: https://django-ecommerce-api.onrender.com/api/products/
+# 🎖️Project features
 
 ## __Authentication System📌__
  -- Register with (username, email, and password)<br />
