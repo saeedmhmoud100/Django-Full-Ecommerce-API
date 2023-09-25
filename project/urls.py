@@ -30,7 +30,7 @@ def get_url_link(url):
 @permission_classes([AllowAny])
 def root(request):
     return Response([
-        {"postman collection":'https://www.postman.com/interstellar-station-543920/workspace/django-ecommerce-api/request/14788230-a77a441f-cf52-4ad7-b433-21fd26b92202'},
+        {"postman collection":'https://www.postman.com/interstellar-station-543920/workspace/django-ecommerce-api/collection/14788230-5b06dde3-90ae-4cde-9e77-df739e34a40f'},
 
         get_url_link('admin/'),
 
