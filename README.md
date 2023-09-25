@@ -1,5 +1,7 @@
 # 🎖️Project features
 
+live url: https://django-ecommerce-api.onrender.com/api/
+
 ## Authentication System📌
  - Register with (username, email, and password)<br />
  - Login with email or username<br />
@@ -51,7 +53,7 @@
 
 The project is completed and ready to use, and I'll include a Postman collection as a small documentation that could help you with its usage. So if you're interested in checking it out, the code is available on my GitHub repository:
 
-💻 [Live version](https://django-ecommerce-api.onrender.com/api/products/)
+💻 [Live version](https://django-ecommerce-api.onrender.com/api/)
 
 Postman collection Link: [Postman Collection](https://www.postman.com/interstellar-station-543920/workspace/django-ecommerce-api/collection/14788230-5b06dde3-90ae-4cde-9e77-df739e34a40f?action=share&creator=14788230&active-environment=14788230-614e2c46-6648-4595-9b26-6bed45e6b170)
 
