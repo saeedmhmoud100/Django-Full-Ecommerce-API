@@ -56,7 +56,7 @@ live url: https://django-ecommerce-api.onrender.com/api/products/
 
 💻[Live version](https://django-ecommerce-api.onrender.com/api/products/) <br />
 
-[Postman Collection Link](https://www.postman.com/interstellar-station-543920/workspace/django-ecommerce-api/collection/14788230-5b06dde3-90ae-4cde-9e77-df739e34a40f?action=share&creator=14788230&active-environment=14788230-614e2c46-6648-4595-9b26-6bed45e6b170) 
+[Postman Collection Link](https://www.postman.com/interstellar-station-543920/workspace/django-ecommerce-api/collection/14788230-5b06dde3-90ae-4cde-9e77-df739e34a40f) 
 
 I welcome any feedback or comments you may have. Your insights are greatly valued and will be incorporated into my ongoing efforts to enhance my skills. Thank you for your time.
 
