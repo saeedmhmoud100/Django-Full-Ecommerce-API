@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
     is_staff = serializers.BooleanField(read_only=True)
     is_superuser = serializers.BooleanField(read_only=True)
     wishlist = serializers.SerializerMethodField()
-    addresses=UserAddressesSerializer(UserAddress,many=True)
+    addresses=UserAddressesSerializer(UserAddress,many=True,required=False)
     class Meta:
         model = get_user_model()
         fields = ['id','username','first_name','last_name','email','is_active','is_staff','is_superuser','password', 'addresses','wishlist']
